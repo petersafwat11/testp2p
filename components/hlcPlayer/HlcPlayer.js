@@ -1,19 +1,16 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-var Hls = require('swarmcloud-hls/dist/hls.min');
-// or P2pEngineHls
-var P2pEngineHls = require('swarmcloud-hls/dist/p2p-engine.min');
+import Script from "next/script";
 
+var Hls = require("swarmcloud-hls/dist/hls.min");
+// or P2pEngineHls
+var P2pEngineHls = require("swarmcloud-hls/dist/p2p-engine.min");
 
 const VideoPlayer = ({ streamUrl }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    const p2pConfig = {
-      logLevel: "debug",
-      live: false,
-      swFile: "./sw.js",
-    };
+    const p2pConfig = {};
 
     const initializePlayer = () => {
       if (Hls.isSupported()) {
@@ -48,16 +45,8 @@ const VideoPlayer = ({ streamUrl }) => {
           totalP2PUploaded = 0,
         }) {
           const total = totalHTTPDownloaded + totalP2PDownloaded;
-          document.querySelector("#info").innerText = `p2p ratio: ${Math.round(
-            (totalP2PDownloaded / total) * 100
-          )}%, saved traffic: ${totalP2PDownloaded}KB`;
         }
       );
-
-      engine.on("FRAG_LOADED", function ({ url, loaded, byP2p }) {
-        const source = byP2p ? "P2P" : "HTTP";
-        addToTable(url, loaded, source);
-      });
     };
 
     initializePlayer();
@@ -67,24 +56,10 @@ const VideoPlayer = ({ streamUrl }) => {
     };
   }, [streamUrl]);
 
-  const addToTable = (url, downloaded, source) => {
-    const infoStr = `download ${url}(size:${downloaded}B) by ${source}`;
-    document.querySelector(
-      "#table-body tbody"
-    ).innerHTML += `<tr style="text-align: center">
-                    <td>${infoStr}</td>
-                </tr>`;
-  };
-
   return (
     <div>
+      {/* <Script src="https://cdn.jsdelivr.net/npm/swarmcloud-hls@0.8.8/dist/hls.min.js"></Script> */}
       <video id="video" controls ref={videoRef}></video>
-      <p id="version">{`hls.js version: ${Hls.version}  p2p version: ${P2PEngineHls.version}`}</p>
-      <h3>download info:</h3>
-      <p id="info"></p>
-      <table id="table-body">
-        <tbody></tbody>
-      </table>
     </div>
   );
 };
