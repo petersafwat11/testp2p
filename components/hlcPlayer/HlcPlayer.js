@@ -25,28 +25,29 @@ const VideoPlayer = ({ streamUrl }) => {
         hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
           videoRef.current.play();
         });
-      } else if (
-        videoRef.current.canPlayType("application/vnd.apple.mpegurl")
-      ) {
-        P2PEngineHls.tryRegisterServiceWorker(p2pConfig).then(() => {
-          videoRef.current.src = streamUrl;
-        });
-        videoRef.current.addEventListener("loadedmetadata", function () {
-          videoRef.current.play();
-        });
       }
+      // else if (
+      //   videoRef.current.canPlayType("application/vnd.apple.mpegurl")
+      // ) {
+      //   P2PEngineHls.tryRegisterServiceWorker(p2pConfig).then(() => {
+      //     videoRef.current.src = streamUrl;
+      //   });
+      //   videoRef.current.addEventListener("loadedmetadata", function () {
+      //     videoRef.current.play();
+      //   });
+      // }
       const engine = new P2PEngineHls(p2pConfig);
 
-      engine.on(
-        "stats",
-        function ({
-          totalHTTPDownloaded = 0,
-          totalP2PDownloaded = 0,
-          totalP2PUploaded = 0,
-        }) {
-          const total = totalHTTPDownloaded + totalP2PDownloaded;
-        }
-      );
+      // engine.on(
+      //   "stats",
+      //   function ({
+      //     totalHTTPDownloaded = 0,
+      //     totalP2PDownloaded = 0,
+      //     totalP2PUploaded = 0,
+      //   }) {
+      //     const total = totalHTTPDownloaded + totalP2PDownloaded;
+      //   }
+      // );
     };
 
     initializePlayer();
