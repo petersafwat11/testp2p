@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import Script from "next/script";
-
+import Hls from 'swarmcloud-hls/dist/hls.min'
 // var Hls = require("swarmcloud-hls/dist/hls.min");
 // or P2pEngineHls
-var Hls = require("swarmcloud-hls/dist/p2p-engine.min");
+// var Hls = require("swarmcloud-hls/dist/p2p-engine.min");
 
 const VideoPlayer = ({ streamUrl }) => {
   const videoRef = useRef(null);
